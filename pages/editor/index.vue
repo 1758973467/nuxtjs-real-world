@@ -74,7 +74,7 @@
 <script>
 import { mapState } from "vuex";
 import { createArticle } from "@/api/articles";
-import ListError from "../../components/ListError.vue";
+import ListError from "@/components/ListError.vue";
 export default {
   components: { ListError },
   name: "EditorIndex",

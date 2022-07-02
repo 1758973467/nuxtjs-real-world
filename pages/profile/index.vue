@@ -10,16 +10,8 @@
               {{ profile.bio }}
             </p>
 
-            <button
-              v-if="!user"
-              class="btn btn-sm btn-outline-secondary action-btn"
-            >
-              <i class="ion-plus-round"></i>
-              &nbsp; {{ profile.following ? "UnFollow" : "Follow" }}
-              {{ profile.username }}
-            </button>
             <nuxt-link
-              v-else
+              v-if="user && user.username === profile.username"
               class="btn btn-sm btn-outline-secondary action-btn"
               :to="{
                 name: 'settings',
@@ -27,6 +19,11 @@
             >
               <i class="ion-gear-a"></i> Edit Profile Settings
             </nuxt-link>
+            <button v-else class="btn btn-sm btn-outline-secondary action-btn">
+              <i class="ion-plus-round"></i>
+              &nbsp; {{ profile.following ? "UnFollow" : "Follow" }}
+              {{ profile.username }}
+            </button>
           </div>
         </div>
       </div>

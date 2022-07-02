@@ -10,17 +10,7 @@
           <p v-else class="text-xs-center">
             <nuxt-link to="/register">Need an account?</nuxt-link>
           </p>
-          <template v-if="errors">
-            <ul
-              v-for="errItemKey in Object.keys(errors)"
-              :key="errItemKey"
-              class="error-messages"
-            >
-              <li v-for="(errDesc, index) in errors[errItemKey]" :key="index">
-                {{ errItemKey + " " + errDesc }}
-              </li>
-            </ul>
-          </template>
+          <list-errors :errors="errors" />
 
           <form @submit.prevent="onSubmit">
             <fieldset v-if="!isLogin" class="form-group">
@@ -64,12 +54,14 @@
 
 <script>
 import { login, register } from "@/api/users";
-
+import ListErrors from "@/components/ListError.vue";
 const Cookie = process.client ? require("js-cookie") : undefined;
 export default {
   name: "LoginIndex",
   middleware: "notAuthentication",
-
+  components: {
+    ListErrors,
+  },
   computed: {
     isLogin() {
       return this.$route.name === "login";

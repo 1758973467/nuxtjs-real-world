@@ -1,9 +1,14 @@
 <template>
   <ul class="error-messages">
     <div v-for="fieldErrorKey in Object.keys(errors)" :key="fieldErrorKey">
-      <li v-for="errorMessage in errors[fieldErrorKey]" :key="errorMessage">
-        {{ fieldErrorKey + " " + errorMessage }}
-      </li>
+      <template v-if="Array.isArray(errors[fieldErrorKey])">
+        <li v-for="errorMessage in errors[fieldErrorKey]" :key="errorMessage">
+          {{ fieldErrorKey + " " + errorMessage }}
+        </li>
+      </template>
+      <template v-else>
+        {{ fieldErrorKey + " " + errors[fieldErrorKey] }}
+      </template>
     </div>
   </ul>
 </template>
