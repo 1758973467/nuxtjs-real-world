@@ -19,7 +19,12 @@
             >
               <i class="ion-gear-a"></i> Edit Profile Settings
             </nuxt-link>
-            <button v-else class="btn btn-sm btn-outline-secondary action-btn">
+            <button
+              v-else
+              class="btn btn-sm btn-outline-secondary action-btn"
+              @click="onFollow"
+              :disabled="followDisabled"
+            >
               <i class="ion-plus-round"></i>
               &nbsp; {{ profile.following ? "UnFollow" : "Follow" }}
               {{ profile.username }}
@@ -148,8 +153,7 @@
 </template>
 
 <script>
-import { getProfile } from "@/api/profile";
-
+import { getProfile, followAuthor, unfollowAuthor } from "@/api/profile";
 import {
   getArticles,
   addFavoriteArticle,
@@ -187,6 +191,11 @@ export default {
       articlesCount: artticlesRes.data.articlesCount,
     };
   },
+  data() {
+    return {
+      followDisabled: false,
+    };
+  },
   watchQuery: ["page"],
   computed: {
     ...mapState(["user"]),
@@ -204,6 +213,17 @@ export default {
       }
       article.favorited = !article.favorited;
       article.favoriteDisabled = false;
+    },
+    async onFollow() {
+      try {
+        this.followDisabled = true;
+        const req = this.profile.following ? unfollowAuthor : followAuthor;
+        const { data } = await req(this.profile.username);
+        this.profile = data.profile;
+      } catch (error) {
+      } finally {
+        this.followDisabled = false;
+      }
     },
   },
 };
